@@ -16,7 +16,7 @@ export default function Game() {
   const [step, setStep] = useState(0);
   const totalSteps = 10;
 
-  const API = "http://localhost:3000";
+  const API = "https://gdg-hackathon-hmj3.onrender.com";
 
   //  Start Game
   const startGame = async () => {
