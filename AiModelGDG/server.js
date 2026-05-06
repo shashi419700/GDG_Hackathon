@@ -35,6 +35,7 @@ app.post("/start", (req, res) => {
     question: formatQuestion(feature),
     question_id: feature
   });
+  console.log("Game started, first question:", feature);
 });
 
 

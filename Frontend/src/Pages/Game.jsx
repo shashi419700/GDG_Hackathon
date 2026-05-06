@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import logo from "../assets/logo.jpeg";
 
+import {API} from "../Urls/url.jsx"
 export default function Game() {
   const [question, setQuestion] = useState("");
   const [questionId, setQuestionId] = useState("");
@@ -16,45 +17,49 @@ export default function Game() {
   const [step, setStep] = useState(0);
   const totalSteps = 10;
 
-  const API = "https://gdg-hackathon-hmj3.onrender.com";
+  // const API = "https://gdg-hackathon-hmj3.onrender.com";
 
   //  Start Game
-  const startGame = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.post(`${API}/start`);
-      setQuestion(res.data.question);
-      setQuestionId(res.data.question_id);
-      setStarted(true);
-      setResult(null);
-      setStep(0);
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
-  };
+const startGame = async () => {
+  setLoading(true);
+  try {
+    const res = await axios.post(`${API}/api/game/start`);
+    
+    setQuestion("Click yes to start"); // first trigger
+    setQuestionId(res.data.sessionId);
+    setStarted(true);
+    setResult(null);
+    setStep(0);
+  } catch (err) {
+    console.error(err);
+  }
+  setLoading(false);
+};
 
   // Send Answer
-  const sendAnswer = async (ans) => {
-    setLoading(true);
-    try {
-      const res = await axios.post(`${API}/answer`, {
-        question_id: questionId,
-        answer: ans,
-      });
+const sendAnswer = async (ans) => {
+  setLoading(true);
+  try {
+    const res = await axios.post(`${API}/api/game/move`, {
+      sessionId: questionId,
+      userInput: ans,
+    });
 
-      if (res.data.done) {
-        setResult(res.data);
-      } else {
-        setQuestion(res.data.question);
-        setQuestionId(res.data.question_id);
-        setStep((prev) => prev + 1);
-      }
-    } catch (err) {
-      console.error(err);
+    if (res.data.type === "guess") {
+      setResult({
+        guess: res.data.content,
+        image: res.data.imageUrl,
+        confidence: 0.9,
+      });
+    } else {
+      setQuestion(res.data.content);
+      setStep((prev) => prev + 1);
     }
-    setLoading(false);
-  };
+  } catch (err) {
+    console.error(err);
+  }
+  setLoading(false);
+};
 
   // ================= COMPONENTS =================
 

@@ -1,18 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../assets/logo.jpeg";
 
+import { auth } from "../firebaseConfig";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const isLoggedIn = !!localStorage.getItem("token");
+  //  Firebase auth listener
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+    });
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    return () => unsubscribe();
+  }, []);
+
+  //  Logout using Firebase
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const navLinkClass = ({ isActive }) =>
@@ -52,7 +68,6 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           <NavLink to="/" className={navLinkClass}>Home</NavLink>
           <NavLink to="/about" className={navLinkClass}>About</NavLink>
-          <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
           <NavLink to="/legal" className={navLinkClass}>Legal</NavLink>
           <NavLink to="/terms" className={navLinkClass}>Terms</NavLink>
 
@@ -83,7 +98,6 @@ export default function Header() {
       <AnimatePresence>
         {open && (
           <>
-            {/* 🔥 Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.6 }}
@@ -92,7 +106,6 @@ export default function Header() {
               className="fixed inset-0 bg-black z-40"
             />
 
-            {/* 🔥 Sidebar */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -100,26 +113,20 @@ export default function Header() {
               transition={{ duration: 0.3 }}
               className="fixed top-0 right-0 w-[75%] max-w-sm h-screen bg-[#020617] z-50 border-l border-yellow-500/20 shadow-2xl p-6 flex flex-col"
             >
-              {/* Header */}
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-yellow-400 font-bold text-lg">
-                  Menu
-                </h2>
+                <h2 className="text-yellow-400 font-bold text-lg">Menu</h2>
                 <button onClick={() => setOpen(false)}>
                   <X className="text-white" />
                 </button>
               </div>
 
-              {/* Links */}
               <div className="flex flex-col gap-4">
                 <NavLink to="/" onClick={() => setOpen(false)} className={navLinkClass}>Home</NavLink>
                 <NavLink to="/about" onClick={() => setOpen(false)} className={navLinkClass}>About</NavLink>
-                <NavLink to="/contact" onClick={() => setOpen(false)} className={navLinkClass}>Contact</NavLink>
-                <NavLink to="/plans" onClick={() => setOpen(false)} className={navLinkClass}>Plans</NavLink>
-                <NavLink to="/dashboard" onClick={() => setOpen(false)} className={navLinkClass}>Dashboard</NavLink>
+                <NavLink to="/legal" onClick={() => setOpen(false)} className={navLinkClass}>Legal</NavLink>
+                <NavLink to="/terms" onClick={() => setOpen(false)} className={navLinkClass}>Terms</NavLink>
               </div>
 
-              {/* Bottom Auth */}
               <div className="mt-auto">
                 {!isLoggedIn ? (
                   <NavLink
