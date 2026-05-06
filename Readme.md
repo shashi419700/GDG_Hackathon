@@ -166,3 +166,7 @@ It can be extended into a full AI-driven system with real model training and NLP
 ---
 
 Enjoy the game! 🎯
+![Game UI](/Frontend//src/assets/IMG2.jpeg)
+![Question Screen](/Frontend//src/assets/IMG4.jpeg)
+![Answer Flow](/Frontend//src/assets/IMG5.jpeg)
+
