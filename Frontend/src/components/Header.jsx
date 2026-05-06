@@ -42,9 +42,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/60 border-b border-yellow-500/20 shadow-[0_0_20px_rgba(255,215,0,0.15)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        
         {/* LOGO */}
-        <Link to="/" className="flex items-center gap-3">
+        <Link to="/game" className="flex items-center gap-3">
           <div className="relative">
             <img
               src={logo}
@@ -59,20 +58,31 @@ export default function Header() {
               WICKET IQ
             </h1>
             <p className="text-[9px] sm:text-[10px] text-gray-400">
-              LIVE SCORE AI
+              Guess Your Favorite IPL Cricketer
             </p>
           </div>
         </Link>
 
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-          <NavLink to="/" className={navLinkClass}>Home</NavLink>
-          <NavLink to="/about" className={navLinkClass}>About</NavLink>
-          <NavLink to="/legal" className={navLinkClass}>Legal</NavLink>
-          <NavLink to="/terms" className={navLinkClass}>Terms</NavLink>
+          <NavLink to="/game" className={navLinkClass}>
+            Home
+          </NavLink>
+          <NavLink to="/about" className={navLinkClass}>
+            About
+          </NavLink>
+          <NavLink to="/legal" className={navLinkClass}>
+            Legal
+          </NavLink>
+          <NavLink to="/terms" className={navLinkClass}>
+            Terms
+          </NavLink>
 
           {!isLoggedIn ? (
-            <NavLink to="/login" className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold hover:scale-105 transition">
+            <NavLink
+              to="/login"
+              className="bg-yellow-400 text-black px-4 py-2 rounded-xl font-bold hover:scale-105 transition"
+            >
               Login
             </NavLink>
           ) : (
@@ -121,10 +131,34 @@ export default function Header() {
               </div>
 
               <div className="flex flex-col gap-4">
-                <NavLink to="/" onClick={() => setOpen(false)} className={navLinkClass}>Home</NavLink>
-                <NavLink to="/about" onClick={() => setOpen(false)} className={navLinkClass}>About</NavLink>
-                <NavLink to="/legal" onClick={() => setOpen(false)} className={navLinkClass}>Legal</NavLink>
-                <NavLink to="/terms" onClick={() => setOpen(false)} className={navLinkClass}>Terms</NavLink>
+                <NavLink
+                  to="/game"
+                  onClick={() => setOpen(false)}
+                  className={navLinkClass}
+                >
+                  Home
+                </NavLink>
+                <NavLink
+                  to="/about"
+                  onClick={() => setOpen(false)}
+                  className={navLinkClass}
+                >
+                  About
+                </NavLink>
+                <NavLink
+                  to="/legal"
+                  onClick={() => setOpen(false)}
+                  className={navLinkClass}
+                >
+                  Legal
+                </NavLink>
+                <NavLink
+                  to="/terms"
+                  onClick={() => setOpen(false)}
+                  className={navLinkClass}
+                >
+                  Terms
+                </NavLink>
               </div>
 
               <div className="mt-auto">
